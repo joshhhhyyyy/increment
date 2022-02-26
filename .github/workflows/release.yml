@@ -30,5 +30,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.PAT }}
-          files: |
-            increment
+          files: increment
