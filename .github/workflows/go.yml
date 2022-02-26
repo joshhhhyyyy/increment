@@ -22,8 +22,8 @@ jobs:
           rm increment
       - name: Build
         run: |
-          go1.17 mod tidy
-          go1.17 build increment.go
+          go mod tidy
+          go build increment.go
           chmod +x increment
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
