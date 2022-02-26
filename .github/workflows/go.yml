@@ -19,12 +19,15 @@ jobs:
           fetch-depth: 0
       - name: Pre-Cleanup
         run: |
-          rm increment
+          rm increment-linux
+          rm increment-macos
       - name: Build
         run: |
           go mod tidy
-          go build increment.go
-          chmod +x increment
+          env GOOS=linux GOARCH=amd64 go build -o increment-linux increment.go
+          env GOOS=darwin GOARCH=amd64 go build -o increment-macos increment.go
+          chmod +x ./dist/increment-linux
+          chmod +x ./dist/increment-macos
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
