@@ -107,6 +107,15 @@ func main() {
 
 	log.Println("the new tag is: ", finaltag)
 
+	gitpull, pullerr := exec.Command("git", "pull").Output()
+	if pullerr != nil {
+		log.Println(string(gitpull))
+		log.Println(pullerr)
+		sentry.CaptureMessage(string(gitpull))
+		log.Println("there was an error when performing git push")
+		erroraaa = true
+	}
+
 	gitadd, adderr := exec.Command("git", "add", ".").Output()
 	if adderr != nil {
 		log.Println(string(gitadd))
@@ -143,7 +152,7 @@ func main() {
 		erroraaa = true
 	}
 
-	gitpushmain, pushmainerr := exec.Command("git", "push", "origin", "main").Output()
+	gitpushmain, pushmainerr := exec.Command("git", "push").Output()
 	if pushmainerr != nil {
 		log.Println(string(gitpushmain))
 		log.Println(pushmainerr)
