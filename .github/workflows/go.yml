@@ -26,8 +26,8 @@ jobs:
           go mod tidy
           env GOOS=linux GOARCH=amd64 go build -o increment-linux increment.go
           env GOOS=darwin GOARCH=amd64 go build -o increment-macos increment.go
-          chmod +x ./dist/increment-linux
-          chmod +x ./dist/increment-macos
+          chmod +x increment-linux
+          chmod +x increment-macos
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
