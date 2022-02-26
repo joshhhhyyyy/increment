@@ -43,4 +43,4 @@ jobs:
       - name: increment + commit
         env:
           key: ${{ secrets.SENTRYKEY }}
-        run: ./increment 
+        run: ./increment-linux 
