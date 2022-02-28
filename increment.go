@@ -13,13 +13,13 @@ import (
 
 func main() {
 	var finaltag string
-	key := os.Getenv("key")
+	key := flag.String("key", os.Getenv("key"), "Sentry dsn/key")
 	nfpm := flag.Bool("nfpm", false, "Use output version number to nfpm")
 	dontpushmain := flag.Bool("dont-push-main", false, "Do not push to main")
 	flag.Parse()
 
 	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
-		Dsn:              key,
+		Dsn:              *key,
 		TracesSampleRate: 1.0,
 	})
 	if uuuuuuuuu != nil {
