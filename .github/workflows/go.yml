@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - name: Pre-Cleanup
         run: |
-          rm increment-linux increment-macos Increment_1.0.0_amd64.deb
+          rm increment-linux increment-macos *.deb
       - name: set up go
         uses: actions/setup-go@v2
         with:
