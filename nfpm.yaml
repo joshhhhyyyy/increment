@@ -4,7 +4,7 @@ platform: "linux"
 version: ${VERSION}
 section: "utils"
 maintainer: "joshy <joshua@joseos.com>"
-description: "A tool to increment the latest git semver by 1"
+description: "A tool to increment the latest git tag sermver by 1"
 homepage: "https://github.com/joshhhhyyyy/increment"
 depends:
 - git
