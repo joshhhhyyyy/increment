@@ -15,6 +15,7 @@ func main() {
 	var finaltag string
 	key := os.Getenv("key")
 	nfpm := flag.Bool("nfpm", false, "Use output version number to nfpm")
+	dontpushmain := flag.Bool("dont-push-main", false, "Do not push to main")
 	flag.Parse()
 
 	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
@@ -151,6 +152,14 @@ func main() {
 		panic(adderr)
 	}
 
+	gitstatus, gitstatuserr := exec.Command("git", "status", "--porcelain").Output()
+	if gitstatuserr != nil {
+		panic(gitstatuserr)
+	}
+	if len(string(gitstatus)) == 0 && !*dontpushmain {
+		panic("there are no errors to commit!")
+	}	
+
 	gitcommit, commiterr := exec.Command("git", "commit", "-m", "🫣").Output()
 	log.Println(string(gitcommit))
 	if commiterr != nil {
@@ -175,11 +184,16 @@ func main() {
 		panic(pushtagerr)
 	}
 
-	gitpushmain, pushmainerr := exec.Command("git", "push").Output()
-	if pushmainerr != nil {
-		log.Println(string(gitpushmain))
-		sentry.CaptureMessage(string(gitpushmain))
-		log.Println("there was an error when performing git push main")
-		panic(pushmainerr)
+	if !*dontpushmain {
+		gitpushmain, pushmainerr := exec.Command("git", "push").Output()
+		if pushmainerr != nil {
+			log.Println(string(gitpushmain))
+			sentry.CaptureMessage(string(gitpushmain))
+			log.Println("there was an error when performing git push main")
+			panic(pushmainerr)
+		}
+	} else {
+		log.Println("Option:", " ", "Dont push main selected. Will not push to main.")
+		log.Println(string(gitpushtag))
 	}
 }
