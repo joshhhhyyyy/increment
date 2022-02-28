@@ -140,7 +140,7 @@ func main() {
 		log.Println(string(gittag))
 		log.Println(tagerr)
 		sentry.CaptureMessage(string(gittag))
-		log.Println("there was an error when performing git push")
+		log.Println("there was an error when performing git tag")
 		erroraaa = true
 	}
 
@@ -149,7 +149,7 @@ func main() {
 		log.Println(string(gitpushtag))
 		log.Println(pushtagerr)
 		sentry.CaptureMessage(string(gitpushtag))
-		log.Println("there was an error when performing git push")
+		log.Println("there was an error when performing git push tag")
 		erroraaa = true
 	}
 
@@ -158,7 +158,7 @@ func main() {
 		log.Println(string(gitpushmain))
 		log.Println(pushmainerr)
 		sentry.CaptureMessage(string(gitpushmain))
-		log.Println("there was an error when performing git push")
+		log.Println("there was an error when performing git push main")
 		erroraaa = true
 	}
 
