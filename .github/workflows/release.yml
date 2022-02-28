@@ -33,7 +33,7 @@ jobs:
           files: |
             increment-linux
             increment-macos
-            Increment_1.0.0_amd64.deb
+            **.deb
   upload:
     name: upload
     runs-on: ubuntu-latest
@@ -57,8 +57,8 @@ jobs:
           git config --global gpg.program gpg2
       - name: get files
         run: |
-          rm Increment_1.0.0_amd64.deb Packages.gz
-          wget https://raw.githubusercontent.com/joshhhhyyyy/increment/main/Increment_1.0.0_amd64.deb
+          rm Increment*.deb Packages.gz
+          curl -s https://api.github.com/repos/joshhhhyyyy/increment/releases/latest | grep "browser_download_url.*deb" | cut -d : -f 2,3 | tr -d \" | wget -qi -
           dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
       - name: commit
         run: |
