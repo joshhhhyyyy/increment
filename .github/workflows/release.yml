@@ -35,6 +35,7 @@ jobs:
             increment-macos
             **.deb
   upload:
+    needs: release
     name: upload
     runs-on: ubuntu-latest
     steps:
