@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 	"os/exec"
@@ -13,9 +14,11 @@ import (
 func main() {
 	var finaltag string
 	key := os.Getenv("key")
+	nfpm := flag.Bool("nfpm", false, "Use output version number to nfpm")
+	flag.Parse()
 
 	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
-		Dsn: key,
+		Dsn:              key,
 		TracesSampleRate: 1.0,
 	})
 	if uuuuuuuuu != nil {
@@ -53,7 +56,7 @@ func main() {
 		dotposition2 = dotposition2 + 1
 
 		firstdigitposition2 = firstdigitposition2 + 1
-	
+
 		seconddigitposition1 = seconddigitposition1 + 1
 		seconddigitposition2 = seconddigitposition2 + 1
 
@@ -77,8 +80,8 @@ func main() {
 			getseconddigit = "0"
 			// } add one to the first digit {
 			firstdigitconvertstringtonumber, wkauhfsevuiejroefw := strconv.Atoi(getfirstdigit) // Convert string to int
-			newfirstdigit := firstdigitconvertstringtonumber + 1 // add one
-			getfirstdigit = strconv.Itoa(newfirstdigit) // Convert int to string as per variable type
+			newfirstdigit := firstdigitconvertstringtonumber + 1                               // add one
+			getfirstdigit = strconv.Itoa(newfirstdigit)                                        // Convert int to string as per variable type
 			// } result: 1.0.0
 			if wkauhfsevuiejroefw != nil {
 				sentry.CaptureException(wkauhfsevuiejroefw)
@@ -88,8 +91,8 @@ func main() {
 			// else if it is not 9, eg. v0.8.9
 			// add one to the second digit {
 			seconddigitconvertstringtonumber, ueworiyiou4783788 := strconv.Atoi(getseconddigit) // Convert string to int
-			newseconddigit := seconddigitconvertstringtonumber + 1 // add one
-			getseconddigit = strconv.Itoa(newseconddigit) // Convert int to string as per variable type
+			newseconddigit := seconddigitconvertstringtonumber + 1                              // add one
+			getseconddigit = strconv.Itoa(newseconddigit)                                       // Convert int to string as per variable type
 			// } result: v0.9.0
 			if ueworiyiou4783788 != nil {
 				sentry.CaptureException(ueworiyiou4783788)
@@ -102,7 +105,7 @@ func main() {
 		if sahdiahd != nil {
 			sentry.CaptureException(sahdiahd)
 			panic(sahdiahd)
-		}	
+		}
 		incrementlastdigit := lastdigitconvertstringtonumber + 1
 		getlastdigit = strconv.Itoa(incrementlastdigit)
 	}
@@ -127,7 +130,19 @@ func main() {
 		log.Println("there was an error when performing git push")
 		panic(pullerr)
 	}
-	
+
+	if *nfpm {
+		log.Println("nfpm build ENABLED")
+		os.Setenv("VERSION", finaltag)
+		nfpmbuild, nfpmerr := exec.Command("nfpm", "package", "-p", "deb").Output()
+		if nfpmerr != nil {
+			log.Println(string(nfpmbuild))
+			sentry.CaptureMessage(string(nfpmbuild))
+			log.Println("there was an error when performing nfpm build")
+			panic(nfpmerr)
+		}
+	}
+
 	gitadd, adderr := exec.Command("git", "add", ".").Output()
 	if adderr != nil {
 		log.Println(string(gitadd))

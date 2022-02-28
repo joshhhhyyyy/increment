@@ -36,9 +36,6 @@ jobs:
           env GOOS=darwin GOARCH=amd64 go build -o increment-macos increment.go
           chmod +x increment-linux
           chmod +x increment-macos
-      - name: Package
-        run: |
-          nfpm package -p deb
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -54,4 +51,4 @@ jobs:
       - name: increment + commit
         env:
           key: ${{ secrets.SENTRYKEY }}
-        run: ./increment-linux 
+        run: ./increment-linux -nfpm

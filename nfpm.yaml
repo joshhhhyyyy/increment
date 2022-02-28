@@ -1,7 +1,7 @@
 name: "Increment"
 arch: "amd64"
 platform: "linux"
-version: "v1.0.0"
+version: ${VERSION}
 section: "utils"
 maintainer: "joshy <joshua@joseos.com>"
 description: "A tool to increment the latest git semver by 1"
