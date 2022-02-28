@@ -11,9 +11,7 @@ import (
 )
 
 func main() {
-	var erroraaa bool = false
 	var finaltag string
-
 	key := os.Getenv("key")
 
 	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
@@ -21,12 +19,15 @@ func main() {
 		TracesSampleRate: 1.0,
 	})
 	if uuuuuuuuu != nil {
-		log.Fatalf("sentry.Init: %s", uuuuuuuuu)
+		log.Println("sentry Init err")
+		panic(uuuuuuuuu)
 	}
 
 	lmao, asdf := exec.Command("git", "describe", "--abbrev=0", "--tags").Output()
 	if asdf != nil {
+		log.Println(lmao)
 		sentry.CaptureMessage(string(lmao))
+		panic(asdf)
 	}
 
 	getlatesttag := string(lmao)
@@ -81,6 +82,7 @@ func main() {
 			// } result: 1.0.0
 			if wkauhfsevuiejroefw != nil {
 				sentry.CaptureException(wkauhfsevuiejroefw)
+				panic(wkauhfsevuiejroefw)
 			}
 		} else {
 			// else if it is not 9, eg. v0.8.9
@@ -91,6 +93,7 @@ func main() {
 			// } result: v0.9.0
 			if ueworiyiou4783788 != nil {
 				sentry.CaptureException(ueworiyiou4783788)
+				panic(ueworiyiou4783788)
 			}
 		}
 	} else {
@@ -98,6 +101,7 @@ func main() {
 		lastdigitconvertstringtonumber, sahdiahd := strconv.Atoi(getlastdigit)
 		if sahdiahd != nil {
 			sentry.CaptureException(sahdiahd)
+			panic(sahdiahd)
 		}	
 		incrementlastdigit := lastdigitconvertstringtonumber + 1
 		getlastdigit = strconv.Itoa(incrementlastdigit)
@@ -108,62 +112,59 @@ func main() {
 
 	log.Println("the new tag is: ", finaltag)
 
+	gitfetch, fetcherr := exec.Command("git", "fetch").Output()
+	if fetcherr != nil {
+		log.Println(string(gitfetch))
+		sentry.CaptureMessage(string(gitfetch))
+		log.Println("there was an error when performing git fetch")
+		panic(fetcherr)
+	}
+
 	gitpull, pullerr := exec.Command("git", "pull").Output()
 	if pullerr != nil {
 		log.Println(string(gitpull))
-		log.Println(pullerr)
 		sentry.CaptureMessage(string(gitpull))
 		log.Println("there was an error when performing git push")
-		erroraaa = true
+		panic(pullerr)
 	}
-
+	
 	gitadd, adderr := exec.Command("git", "add", ".").Output()
 	if adderr != nil {
 		log.Println(string(gitadd))
-		log.Println(adderr)
 		sentry.CaptureMessage(string(gitadd))
 		log.Println("there was an error when performing git push")
-		erroraaa = true
+		panic(adderr)
 	}
 
 	gitcommit, commiterr := exec.Command("git", "commit", "-m", "🫣").Output()
 	log.Println(string(gitcommit))
 	if commiterr != nil {
-		log.Println(commiterr)
 		sentry.CaptureMessage(string(gitcommit))
 		log.Println("there was an error when performing git push")
-		erroraaa = true
+		panic(commiterr)
 	}
 
 	gittag, tagerr := exec.Command("git", "tag", "-a", finaltag, "-m", "its new release time!! ✨").Output()
 	if tagerr != nil {
 		log.Println(string(gittag))
-		log.Println(tagerr)
 		sentry.CaptureMessage(string(gittag))
 		log.Println("there was an error when performing git tag")
-		erroraaa = true
+		panic(tagerr)
 	}
 
 	gitpushtag, pushtagerr := exec.Command("git", "push", "origin", finaltag).Output()
 	if pushtagerr != nil {
 		log.Println(string(gitpushtag))
-		log.Println(pushtagerr)
 		sentry.CaptureMessage(string(gitpushtag))
 		log.Println("there was an error when performing git push tag")
-		erroraaa = true
+		panic(pushtagerr)
 	}
 
 	gitpushmain, pushmainerr := exec.Command("git", "push").Output()
 	if pushmainerr != nil {
 		log.Println(string(gitpushmain))
-		log.Println(pushmainerr)
 		sentry.CaptureMessage(string(gitpushmain))
 		log.Println("there was an error when performing git push main")
-		erroraaa = true
+		panic(pushmainerr)
 	}
-
-	if erroraaa {
-			log.Println("there was an error")
-		}
-
 }
