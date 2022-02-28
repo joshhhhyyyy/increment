@@ -19,8 +19,16 @@ jobs:
           fetch-depth: 0
       - name: Pre-Cleanup
         run: |
-          rm increment-linux
-          rm increment-macos
+          rm increment-linux increment-macos Increment_1.0.0_amd64.deb
+      - name: set up go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17.7'
+          check-latest: true
+      - name: get dependencies
+        run: |
+          go get github.com/goreleaser/nfpm/v2/cmd/nfpm
+          go install github.com/goreleaser/nfpm/v2/cmd/nfpm
       - name: Build
         run: |
           go mod tidy
@@ -28,6 +36,9 @@ jobs:
           env GOOS=darwin GOARCH=amd64 go build -o increment-macos increment.go
           chmod +x increment-linux
           chmod +x increment-macos
+      - name: Package
+        run: |
+          nfpm package -p deb
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
