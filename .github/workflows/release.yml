@@ -58,7 +58,7 @@ jobs:
       - name: get files
         run: |
           rm Increment_1.0.0_amd64.deb Packages.gz
-          wget https://raw.githubusercontent.com/joshhhhyyyy/backup/main/Increment_1.0.0_amd64.deb
+          wget https://raw.githubusercontent.com/joshhhhyyyy/increment/main/Increment_1.0.0_amd64.deb
           dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
       - name: commit
         run: |
