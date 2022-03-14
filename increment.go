@@ -11,32 +11,7 @@ import (
 	"github.com/getsentry/sentry-go"
 )
 
-func main() {
-	var finaltag string
-	key := flag.String("key", os.Getenv("key"), "Sentry dsn/key")
-	nfpm := flag.Bool("nfpm", false, "Use output version number to nfpm")
-	dontpushmain := flag.Bool("dont-push-main", false, "Do not push to main")
-	flag.Parse()
-
-	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
-		Dsn:              *key,
-		TracesSampleRate: 1.0,
-	})
-	if uuuuuuuuu != nil {
-		log.Println("sentry Init err")
-		panic(uuuuuuuuu)
-	}
-
-	lmao, asdf := exec.Command("git", "describe", "--abbrev=0", "--tags").Output()
-	if asdf != nil {
-		log.Println(lmao)
-		sentry.CaptureMessage(string(lmao))
-		panic(asdf)
-	}
-
-	getlatesttag := string(lmao)
-	log.Println("the initial (latest) tag is: ", getlatesttag)
-
+func increment(initialtag string) string {
 	// set default values
 	dotposition1 := 2
 	dotposition2 := 3
@@ -50,7 +25,7 @@ func main() {
 	seconddigitposition1 := 3
 	seconddigitposition2 := 4
 
-	isdotthere := getlatesttag[dotposition1:dotposition2]
+	isdotthere := initialtag[dotposition1:dotposition2]
 
 	for isdotthere != "." {
 		dotposition1 = dotposition1 + 1
@@ -64,12 +39,12 @@ func main() {
 		lastdigitposition1 = lastdigitposition1 + 1
 		lastdigitposition2 = lastdigitposition2 + 1
 
-		isdotthere = getlatesttag[dotposition1:dotposition2]
+		isdotthere = initialtag[dotposition1:dotposition2]
 	}
 
-	getfirstdigit := getlatesttag[firstdigitposition1:firstdigitposition2]
-	getseconddigit := getlatesttag[seconddigitposition1:seconddigitposition2]
-	getlastdigit := getlatesttag[lastdigitposition1:lastdigitposition2]
+	getfirstdigit := initialtag[firstdigitposition1:firstdigitposition2]
+	getseconddigit := initialtag[seconddigitposition1:seconddigitposition2]
+	getlastdigit := initialtag[lastdigitposition1:lastdigitposition2]
 
 	// if the last digit is 9, eg. v0.0.9,
 	if getlastdigit == "9" {
@@ -112,8 +87,34 @@ func main() {
 	}
 
 	almostfinaltag := strings.Join([]string{getfirstdigit, getseconddigit, getlastdigit}, ".")
-	finaltag = strings.Join([]string{"v", almostfinaltag}, "")
+	finaltag := strings.Join([]string{"v", almostfinaltag}, "")
+	return finaltag
+}
 
+func main() {
+	key := flag.String("key", os.Getenv("key"), "Sentry dsn/key")
+	nfpm := flag.Bool("nfpm", false, "Use output version number to nfpm")
+	dontpushmain := flag.Bool("dont-push-main", false, "Do not push to main")
+	flag.Parse()
+
+	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
+		Dsn:              *key,
+		TracesSampleRate: 1.0,
+	})
+	if uuuuuuuuu != nil {
+		log.Println("sentry Init err")
+		panic(uuuuuuuuu)
+	}
+
+	lmao, asdf := exec.Command("git", "describe", "--abbrev=0", "--tags").Output()
+	if asdf != nil {
+		log.Println(lmao)
+		sentry.CaptureMessage(string(lmao))
+		panic(asdf)
+	}
+
+	log.Println("the initial (latest) tag is: ", string(lmao))
+	finaltag := increment(string(lmao))
 	log.Println("the new tag is: ", finaltag)
 
 	gitfetch, fetcherr := exec.Command("git", "fetch").Output()
@@ -158,7 +159,7 @@ func main() {
 	}
 	if len(string(gitstatus)) == 0 && !*dontpushmain {
 		panic("there are no errors to commit!")
-	}	
+	}
 
 	gitcommit, commiterr := exec.Command("git", "commit", "-m", "🫣").Output()
 	log.Println(string(gitcommit))
