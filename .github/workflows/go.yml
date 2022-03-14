@@ -32,6 +32,7 @@ jobs:
       - name: Build
         run: |
           go mod tidy
+          gofmt -s increment.go
           env GOOS=linux GOARCH=amd64 go build -o increment-linux increment.go
           env GOOS=darwin GOARCH=amd64 go build -o increment-macos increment.go
           chmod +x increment-linux
