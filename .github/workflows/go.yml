@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - name: Pre-Cleanup
         run: |
-          rm increment_amd64 increment_arm64 *.deb
+          rm binaries/* packages/*
       - name: set up go
         uses: actions/setup-go@v2
         with:
@@ -33,9 +33,9 @@ jobs:
         run: |
           go mod tidy
           gofmt -s increment.go
-          env GOOS=linux GOARCH=amd64 go build -o increment_amd64 increment.go
-          env GOOS=linux GOARCH=arm64 go build -o increment_arm64 increment.go
-          chmod +x increment_arm64 increment_amd64
+          env GOOS=linux GOARCH=amd64 go build -o binaries/increment_amd64 increment.go
+          env GOOS=linux GOARCH=arm64 go build -o binaries/increment_arm64 increment.go
+          chmod +x binaries/increment_arm64 binaries/increment_amd64
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
@@ -51,4 +51,4 @@ jobs:
       - name: increment + commit
         env:
           key: ${{ secrets.SENTRYKEY }}
-        run: ./increment_amd64 -nfpm
+        run: /binaries/increment_amd64 -nfpm

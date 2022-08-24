@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -137,22 +138,25 @@ func main() {
 		log.Println("nfpm build ENABLED")
 		os.Setenv("VERSION", finaltag)
 
-		// build deb for linux/amd64
-		nfpmbuildamd64, nfpmerramd64 := exec.Command("nfpm", "package", "-p", "deb", "-f", ".nfpm/amd64.yaml").Output()
-		if nfpmerramd64 != nil {
-			log.Println(string(nfpmbuildamd64))
-			sentry.CaptureMessage(string(nfpmbuildamd64))
-			log.Println("there was an error when performing nfpm build for amd64")
-			panic(nfpmerramd64)
+		// get all files in the .nfpm directory
+		files, fileserr := ioutil.ReadDir(".nfpm")
+		if fileserr != nil {
+			log.Println("there was an error when reading .nfpm")
+			panic(fileserr)
 		}
 
-		// build deb for linux/arm64 BINARYARCHITECTURE
-		nfpmbuildarm64, nfpmerrarm64 := exec.Command("nfpm", "package", "-p", "deb", "-f", ".nfpm/arm64.yaml").Output()
-		if nfpmerrarm64 != nil {
-			log.Println(string(nfpmbuildarm64))
-			sentry.CaptureMessage(string(nfpmbuildarm64))
-			log.Println("there was an error when performing nfpm build for arm64")
-			panic(nfpmerrarm64)
+		// run nfpm on each of the files detected
+		for _, file := range files {
+			yaml := ".nfpm/" + file.Name()
+			nfpmbuild, nfpmerr := exec.Command("nfpm", "package", "-p", "deb", "-f", yaml, "-t", "packages/").Output()
+			if nfpmerr != nil {
+				log.Println(string(nfpmbuild))
+				sentry.CaptureMessage(string(nfpmbuild))
+				log.Println("there was an error when performing nfpm build for", yaml)
+				panic(nfpmerr)
+			} else {
+				log.Println("Successfully executed", yaml)
+			}
 		}
 	}
 

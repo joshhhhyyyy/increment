@@ -9,5 +9,5 @@ homepage: "https://github.com/joshhhhyyyy/increment"
 depends:
 - git
 contents:
-- src: "increment_arm64"
+- src: "binaries/increment_arm64"
   dst: /usr/bin/increment

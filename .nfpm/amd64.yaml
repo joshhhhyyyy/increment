@@ -9,5 +9,5 @@ homepage: "https://github.com/joshhhhyyyy/increment"
 depends:
 - git
 contents:
-- src: "increment_amd64"
+- src: "binaries/increment_amd64"
   dst: /usr/bin/increment
