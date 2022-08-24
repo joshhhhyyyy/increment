@@ -15,13 +15,13 @@ func increment(initialtag string) string {
 	// make every position of initialtag a variable so we can manipulate it
 	firstdigitposition1 := 1
 	firstdigitposition2 := 2
-	
+
 	dotposition1 := 2
 	dotposition2 := 3
-	
+
 	seconddigitposition1 := 3
 	seconddigitposition2 := 4
-	
+
 	lastdigitposition1 := 5
 	lastdigitposition2 := 6
 
