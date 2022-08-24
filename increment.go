@@ -139,15 +139,15 @@ func main() {
 		os.Setenv("VERSION", finaltag)
 
 		// get all files in the .nfpm directory
-		files, fileserr := ioutil.ReadDir(".nfpm")
+		nfpmconfig, fileserr := ioutil.ReadDir(".nfpm")
 		if fileserr != nil {
 			log.Println("there was an error when reading .nfpm")
 			panic(fileserr)
 		}
 
 		// run nfpm on each of the files detected
-		for _, file := range files {
-			yaml := ".nfpm/" + file.Name()
+		for _, nfpmconfigfile := range nfpmconfig {
+			yaml := ".nfpm/" + nfpmconfigfile.Name()
 			nfpmbuild, nfpmerr := exec.Command("nfpm", "package", "-p", "deb", "-f", yaml, "-t", "packages/").Output()
 			if nfpmerr != nil {
 				log.Println(string(nfpmbuild))
