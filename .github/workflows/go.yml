@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - name: Pre-Cleanup
         run: |
-          rm increment-linux *.deb
+          rm increment_amd64 increment_arm64 *.deb
       - name: set up go
         uses: actions/setup-go@v2
         with:
@@ -51,4 +51,4 @@ jobs:
       - name: increment + commit
         env:
           key: ${{ secrets.SENTRYKEY }}
-        run: ./increment-linux -nfpm
+        run: ./increment_amd64 -nfpm
