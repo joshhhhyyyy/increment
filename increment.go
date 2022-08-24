@@ -92,13 +92,12 @@ func increment(initialtag string) string {
 }
 
 func main() {
-	key := flag.String("key", os.Getenv("key"), "Sentry dsn/key")
 	nfpm := flag.Bool("nfpm", false, "Use output version number to nfpm")
 	dontpushmain := flag.Bool("dont-push-main", false, "Do not push to main")
 	flag.Parse()
 
 	uuuuuuuuu := sentry.Init(sentry.ClientOptions{
-		Dsn:              *key,
+		Dsn:              "https://4df9dbb530924c1dae76c615497d21b5@o1153157.ingest.sentry.io/6232041",
 		TracesSampleRate: 1.0,
 	})
 	if uuuuuuuuu != nil {
