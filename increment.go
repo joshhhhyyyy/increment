@@ -87,7 +87,7 @@ func increment(initialtag string) string {
 	}
 
 	almostfinaltag := strings.Join([]string{getfirstdigit, getseconddigit, getlastdigit}, ".")
-	finaltag := strings.Join([]string{"v", almostfinaltag}, "")
+	finaltag := "v" + almostfinaltag
 	return finaltag
 }
 
