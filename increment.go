@@ -136,7 +136,7 @@ func main() {
 	if *nfpm {
 		log.Println("nfpm build ENABLED")
 		os.Setenv("VERSION", finaltag)
-		
+
 		// build deb for linux/amd64
 		os.Setenv("NFPMARCHITECTURE", "amd64")
 		os.Setenv("BINARYARCHITECTURE", "increment_amd64")
@@ -147,7 +147,7 @@ func main() {
 			log.Println("there was an error when performing nfpm build for amd64")
 			panic(nfpmerramd64)
 		}
-		
+
 		// build deb for linux/arm64 BINARYARCHITECTURE
 		os.Setenv("NFPMARCHITECTURE", "arm64")
 		os.Setenv("BINARYARCHITECTURE", "increment_arm64")
