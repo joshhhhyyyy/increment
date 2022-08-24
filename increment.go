@@ -12,18 +12,18 @@ import (
 )
 
 func increment(initialtag string) string {
-	// set default values
-	dotposition1 := 2
-	dotposition2 := 3
-
+	// make every position of initialtag a variable so we can manipulate it
 	firstdigitposition1 := 1
 	firstdigitposition2 := 2
-
-	lastdigitposition1 := 5
-	lastdigitposition2 := 6
-
+	
+	dotposition1 := 2
+	dotposition2 := 3
+	
 	seconddigitposition1 := 3
 	seconddigitposition2 := 4
+	
+	lastdigitposition1 := 5
+	lastdigitposition2 := 6
 
 	isdotthere := initialtag[dotposition1:dotposition2]
 
