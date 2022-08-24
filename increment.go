@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -139,7 +138,7 @@ func main() {
 		os.Setenv("VERSION", finaltag)
 
 		// get all files in the .nfpm directory
-		nfpmconfig, fileserr := ioutil.ReadDir(".nfpm")
+		nfpmconfig, fileserr := os.ReadDir(".nfpm")
 		if fileserr != nil {
 			log.Println("there was an error when reading .nfpm")
 			panic(fileserr)
