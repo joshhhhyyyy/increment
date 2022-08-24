@@ -35,7 +35,7 @@ jobs:
           gofmt -s increment.go
           env GOOS=linux GOARCH=amd64 go build -o increment_amd64 increment.go
           env GOOS=linux GOARCH=arm64 go build -o increment_arm64 increment.go
-          chmod +x increment-linux
+          chmod +x increment_arm64 increment_amd64
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v4
         with:
