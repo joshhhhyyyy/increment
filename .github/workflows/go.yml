@@ -51,4 +51,4 @@ jobs:
       - name: increment + commit
         env:
           key: ${{ secrets.SENTRYKEY }}
-        run: /binaries/increment_amd64 -nfpm
+        run: binaries/increment_amd64 -nfpm
