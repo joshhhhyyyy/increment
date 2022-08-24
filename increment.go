@@ -139,6 +139,7 @@ func main() {
 		
 		// build deb for linux/amd64
 		os.Setenv("NFPMARCHITECTURE", "amd64")
+		os.Setenv("BINARYARCHITECTURE", "increment_amd64")
 		nfpmbuildamd64, nfpmerramd64 := exec.Command("nfpm", "package", "-p", "deb").Output()
 		if nfpmerramd64 != nil {
 			log.Println(string(nfpmbuildamd64))
@@ -147,8 +148,9 @@ func main() {
 			panic(nfpmerramd64)
 		}
 		
-		// build deb for linux/arm64
+		// build deb for linux/arm64 BINARYARCHITECTURE
 		os.Setenv("NFPMARCHITECTURE", "arm64")
+		os.Setenv("BINARYARCHITECTURE", "increment_arm64")
 		nfpmbuildarm64, nfpmerrarm64 := exec.Command("nfpm", "package", "-p", "deb").Output()
 		if nfpmerrarm64 != nil {
 			log.Println(string(nfpmbuildarm64))
