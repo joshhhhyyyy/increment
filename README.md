@@ -29,8 +29,6 @@ Made with 😫 , 😓 &amp; 😭
 ## Options
 **note: both single minus "-" and double minus "--" work fine
 
-```-key=""``` // Required but should be set with environment variables instead, Type: string, Sentry dsn/key
-
 ```-nfpm``` // Not needed at all, Type: bool, Whether to build a deb with nfpm or not
 
 ```--dont-push-main=""``` // Optional, Type: bool, Optional to not push to main (make a new tag only)
