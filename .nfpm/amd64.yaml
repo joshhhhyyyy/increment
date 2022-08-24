@@ -1,0 +1,13 @@
+name: "Increment"
+arch: "amd64"
+platform: "linux"
+version: ${VERSION}
+section: "utils"
+maintainer: "joshy <joshua@joseos.com>"
+description: "A tool to increment the latest git tag sermver by 1"
+homepage: "https://github.com/joshhhhyyyy/increment"
+depends:
+- git
+contents:
+- src: "increment_amd64"
+  dst: /usr/bin/increment

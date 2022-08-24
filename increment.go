@@ -15,13 +15,13 @@ func increment(initialtag string) string {
 	// make every position of initialtag a variable so we can manipulate it
 	firstdigitposition1 := 1
 	firstdigitposition2 := 2
-	
+
 	dotposition1 := 2
 	dotposition2 := 3
-	
+
 	seconddigitposition1 := 3
 	seconddigitposition2 := 4
-	
+
 	lastdigitposition1 := 5
 	lastdigitposition2 := 6
 
@@ -138,9 +138,7 @@ func main() {
 		os.Setenv("VERSION", finaltag)
 
 		// build deb for linux/amd64
-		os.Setenv("NFPMARCHITECTURE", "amd64")
-		os.Setenv("BINARYARCHITECTURE", "increment_amd64")
-		nfpmbuildamd64, nfpmerramd64 := exec.Command("nfpm", "package", "-p", "deb").Output()
+		nfpmbuildamd64, nfpmerramd64 := exec.Command("nfpm", "package", "-p", "deb", "-f", ".nfpm/amd64.yaml").Output()
 		if nfpmerramd64 != nil {
 			log.Println(string(nfpmbuildamd64))
 			sentry.CaptureMessage(string(nfpmbuildamd64))
@@ -149,9 +147,7 @@ func main() {
 		}
 
 		// build deb for linux/arm64 BINARYARCHITECTURE
-		os.Setenv("NFPMARCHITECTURE", "arm64")
-		os.Setenv("BINARYARCHITECTURE", "increment_arm64")
-		nfpmbuildarm64, nfpmerrarm64 := exec.Command("nfpm", "package", "-p", "deb").Output()
+		nfpmbuildarm64, nfpmerrarm64 := exec.Command("nfpm", "package", "-p", "deb", "-f", ".nfpm/arm64.yaml").Output()
 		if nfpmerrarm64 != nil {
 			log.Println(string(nfpmbuildarm64))
 			sentry.CaptureMessage(string(nfpmbuildarm64))

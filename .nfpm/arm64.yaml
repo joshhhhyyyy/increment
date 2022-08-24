@@ -1,5 +1,5 @@
 name: "Increment"
-arch: ${NFPMARCHITECTURE}
+arch: "arm64"
 platform: "linux"
 version: ${VERSION}
 section: "utils"
@@ -9,5 +9,5 @@ homepage: "https://github.com/joshhhhyyyy/increment"
 depends:
 - git
 contents:
-- src: "${BINARYARCHITECTURE}"
+- src: "increment_arm64"
   dst: /usr/bin/increment
