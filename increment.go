@@ -136,12 +136,25 @@ func main() {
 	if *nfpm {
 		log.Println("nfpm build ENABLED")
 		os.Setenv("VERSION", finaltag)
-		nfpmbuild, nfpmerr := exec.Command("nfpm", "package", "-p", "deb").Output()
-		if nfpmerr != nil {
-			log.Println(string(nfpmbuild))
-			sentry.CaptureMessage(string(nfpmbuild))
-			log.Println("there was an error when performing nfpm build")
-			panic(nfpmerr)
+		
+		// build deb for linux/amd64
+		os.Setenv("NFPMARCHITECTURE", "amd64")
+		nfpmbuildamd64, nfpmerramd64 := exec.Command("nfpm", "package", "-p", "deb").Output()
+		if nfpmerramd64 != nil {
+			log.Println(string(nfpmbuildamd64))
+			sentry.CaptureMessage(string(nfpmbuildamd64))
+			log.Println("there was an error when performing nfpm build for amd64")
+			panic(nfpmerramd64)
+		}
+		
+		// build deb for linux/arm64
+		os.Setenv("NFPMARCHITECTURE", "arm64")
+		nfpmbuildarm64, nfpmerrarm64 := exec.Command("nfpm", "package", "-p", "deb").Output()
+		if nfpmerrarm64 != nil {
+			log.Println(string(nfpmbuildarm64))
+			sentry.CaptureMessage(string(nfpmbuildarm64))
+			log.Println("there was an error when performing nfpm build for arm64")
+			panic(nfpmerrarm64)
 		}
 	}
 
